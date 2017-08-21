@@ -8,7 +8,7 @@
   </head>
   <body>
 
-    <div class="container" style="padding-top: 20px">
+    <div class="container" style="padding-top: 20px; padding-bottom: 20px">
         <ul id="nav_sexe" class="nav nav-tabs" style="margin-bottom: 20px;">
             <li class="nav-item">
                 <a id="nav_F" class="nav-link" href="?fille">Fille</a>
@@ -18,9 +18,10 @@
             </li>
         </ul>
         <div class="row">
-            <div class="col-md-7" style="padding-bottom: 20px;">
+            <div class="col-md-7">
                 <p>Choisissez le prénom que vous préférez dans cette liste : </p>
                 <div id="liste_prenoms" class="list-group"></div>
+                <p style="font-size: 12px; margin-top: 10px; opacity: 0.7;"><em>&nbsp;&nbsp;<span class="text-success">+ 1 point</span> pour le prénom choisi et <span class="text-danger">- 0.5 point</span> pour les autres</br >&nbsp;&nbsp;<span class="text-danger">- 1 point</span> pour tous les prenoms, si aucun n'est choisi </em></p>
             </div>
             <div class="col-md-5">
                 <div class="card">
@@ -29,6 +30,7 @@
                     <p class="card-text"><ul id="classement"></ul></p>
                   </div>
                 </div>
+                <p style="font-size: 12px; opacity: 0.7; margin-top: 10px;" class="text-right"><a id="effacer_les_scores" href="javascript:void(0)">Effacer les scores</a></p>
             </div>
         </div>
     </div>

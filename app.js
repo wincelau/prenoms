@@ -81,6 +81,7 @@ var choix = function(prenom) {
 var nouvelleListe = function() {
     var listeATirer = [];
 
+    $('#liste_prenoms .liste_prenoms_item').addClass('disabled');
     var nb_tirage_defaut = Math.abs(nb_point_to_hide) * nb_tirage_per_points;
     var nb_tirage_max = (nb_point_max * nb_tirage_per_points) + nb_tirage_defaut;
 
@@ -106,12 +107,14 @@ var nouvelleListe = function() {
     }
 
     if(aucun_possible && $('#liste_prenoms .liste_prenoms_item').length > 0) {
-        $('#liste_prenoms').append("<a data-prenom='aucun' href='javascript:void(0)' class='list-group-item liste_prenoms_item'><i><small>Aucun de la liste</small></i></a>")
+        $('#liste_prenoms').append("<a data-prenom='aucun' href='javascript:void(0)' class='list-group-item list-group-item-action liste_prenoms_item'><i><small>Aucun de la liste</small></i></a>")
     }
 
     if($('#liste_prenoms .liste_prenoms_item').length == 0) {
         $('#liste_prenoms').html("<p><i>Plus aucun prénom disponible</i></p>")
     }
+
+    $('#liste_prenoms .liste_prenoms_item').eq(0).focus();
 }
 
 var setPrenomsInListe = function(listeATirer) {
@@ -120,6 +123,13 @@ var setPrenomsInListe = function(listeATirer) {
     if(!prenom) {
         return;
     }
+
+    var indexSearch = listeATirer.indexOf(prenom);
+    while(indexSearch !== -1) {
+        listeATirer.splice(indexSearch, 1);
+        indexSearch = listeATirer.indexOf(prenom);
+    };
+
     var point = null;
     if(choisi[prenom]) {
         point = choisi[prenom];
@@ -132,7 +142,7 @@ var setPrenomsInListe = function(listeATirer) {
         couleur = "danger";
     }
 
-    var element = $("<a href='javascript:void(0)' class='list-group-item liste_prenoms_item'></a>");
+    var element = $("<a href='javascript:void(0)' class='list-group-item list-group-item-action liste_prenoms_item '></a>");
     element.attr('data-prenom', prenom);
     element.html(prenom);
     if(point !== null) {
@@ -173,11 +183,15 @@ var trierTableauClassement = function() {
 }
 
 $('#liste_prenoms').on('click', '.liste_prenoms_item', function(e) {
+    if($(this).hasClass('disabled')) {
+        return false;
+    }
     choix($(this).attr('data-prenom'));
     nouvelleListe();
     afficherClassement();
     $("#classement_cacher_tout").hide();
     $("#classement_voir_tout").show();
+
     return false;
 });
 
@@ -185,6 +199,7 @@ $('#classement_voir_tout').on('click', function(e) {
     afficherClassement(99999);
     $(this).hide();
     $("#classement_cacher_tout").show();
+
     return false;
 });
 
@@ -192,5 +207,16 @@ $('#classement_cacher_tout').on('click', function(e) {
     afficherClassement();
     $(this).hide();
     $("#classement_voir_tout").show();
+
+    return false;
+});
+
+$('#effacer_les_scores').on('click', function(e) {
+    if(!confirm("Étes vous sûr de vouloir effacer les scores ?")) {
+
+        return false;
+    }
+    localStorage.removeItem(sexe);
+    document.location.reload();
     return false;
 });
