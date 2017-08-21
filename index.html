@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="fr_FR">
+  <head>
+    <title>Choisi un prénom !</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+  </head>
+  <body>
+
+    <div class="container" style="padding-top: 20px">
+        <ul id="nav_sexe" class="nav nav-tabs" style="margin-bottom: 20px;">
+            <li class="nav-item">
+                <a id="nav_F" class="nav-link" href="?fille">Fille</a>
+            </li>
+            <li class="nav-item">
+                <a id="nav_M" class="nav-link" href="?garcon">Garçon</a>
+            </li>
+        </ul>
+        <div class="row">
+            <div class="col-md-7" style="padding-bottom: 20px;">
+                <p>Choisissez le prénom que vous préférez dans cette liste : </p>
+                <div id="liste_prenoms" class="list-group"></div>
+            </div>
+            <div class="col-md-5">
+                <div class="card">
+                  <div class="card-body">
+                    <h5 class="card-title">Top 10 <small><a id="classement_voir_tout" style="font-size: 12px;" href="javascript:void(0)">(voir tout)</a><a id="classement_cacher_tout" style="font-size: 12px; display: none;" href="javascript:void(0)">(afficher les 10)</a></small> <small style="font-size: 12px;" class="text-muted float-right"><span id="progression"></span>% des prénoms ont été proposés</small></h5>
+                    <p class="card-text"><ul id="classement"></ul></p>
+                  </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
+    <script src="papaparse.min.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>
