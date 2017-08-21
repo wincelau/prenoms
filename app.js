@@ -35,6 +35,10 @@ Papa.parse(fichier, {
     }
 });
 
+var sleep = function(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 var init = function() {
     $('#nav_'+sexe).html($('#nav_'+sexe).html() + " <small class='text-muted'>(" + prenoms.length + " prenoms)</small>");
     afficherClassement();
@@ -113,8 +117,6 @@ var nouvelleListe = function() {
     if($('#liste_prenoms .liste_prenoms_item').length == 0) {
         $('#liste_prenoms').html("<p><i>Plus aucun prénom disponible</i></p>")
     }
-
-    $('#liste_prenoms .liste_prenoms_item').eq(0).focus();
 }
 
 var setPrenomsInListe = function(listeATirer) {
@@ -186,12 +188,14 @@ $('#liste_prenoms').on('click', '.liste_prenoms_item', function(e) {
     if($(this).hasClass('disabled')) {
         return false;
     }
-    choix($(this).attr('data-prenom'));
-    nouvelleListe();
-    afficherClassement();
-    $("#classement_cacher_tout").hide();
-    $("#classement_voir_tout").show();
-
+    $(this).addClass("active");
+    sleep(200).then(() => {
+        choix($(this).attr('data-prenom'));
+        nouvelleListe();
+        afficherClassement();
+        $("#classement_cacher_tout").hide();
+        $("#classement_voir_tout").show();
+    });
     return false;
 });
 
