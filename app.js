@@ -77,6 +77,10 @@ var choix = function(prenom) {
         } else {
             choisi[element_prenom] += nb_points_non_choisi;
         }
+
+        if(choisi[element_prenom] < nb_point_to_hide) {
+            choisi[element_prenom] = nb_point_to_hide;
+        }
     });
 
     localStorage.setItem(sexe, JSON.stringify(choisi));
@@ -180,7 +184,15 @@ var afficherClassement = function(nb_max = 10) {
     var nb_prenoms = 0;
     for(prenom in choisi) {
         if(nb_prenoms < nb_max) {
-            $('#classement').append("<li>"+prenom+" <small class='text-muted'>("+choisi[prenom] + " points)</small></li>");
+            var element = $("<li>"+prenom+" <small class='text-muted'>("+choisi[prenom] + " points)</small></li>");
+            if(choisi[prenom] < 0) {
+                element.css('opacity', '0.6');
+            }
+            if(choisi[prenom] <= nb_point_to_hide) {
+                element.css('opacity', '0.4');
+                element.css('text-decoration', 'line-through');
+            }
+            $('#classement').append(element);
         }
         nb_prenoms += 1;
 
