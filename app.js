@@ -8,7 +8,8 @@ var aucun_possible = true;
 var nb_point_defaut = 0;
 var nb_point_to_hide = -2;
 var nb_point_max = 2;
-var nb_tirage_per_points = 50;
+var nb_tirage_per_points = 20;
+var nb_tirage_defaut = Math.abs(nb_point_to_hide) * (nb_tirage_per_points) * 2;
 /* FIN DES OPTIONS */
 
 var prenoms = [];
@@ -115,8 +116,6 @@ var nouvelleListe = function() {
 }
 
 var getNbExemplaire = function(prenom) {
-    var nb_tirage_defaut = Math.abs(nb_point_to_hide) * (nb_tirage_per_points) * 2;
-
     var nb_exemplaire = nb_tirage_defaut;
 
     if(!choisi[prenom]) {
@@ -186,10 +185,10 @@ var afficherClassement = function(nb_max = 10) {
         if(nb_prenoms < nb_max) {
             var element = $("<li>"+prenom+" <small class='text-muted'>("+choisi[prenom] + " points)</small></li>");
             if(choisi[prenom] < 0) {
-                element.css('opacity', '0.6');
+                element.css('opacity', '0.5');
             }
             if(choisi[prenom] <= nb_point_to_hide) {
-                element.css('opacity', '0.4');
+                element.css('opacity', '0.3');
                 element.css('text-decoration', 'line-through');
             }
             $('#classement').append(element);
@@ -222,7 +221,7 @@ $('#liste_prenoms').on('click', '.liste_prenoms_item', function(e) {
         return false;
     }
     $(this).addClass("active");
-    sleep(200).then(() => {
+    sleep(150).then(() => {
         choix($(this).attr('data-prenom'));
         nouvelleListe();
         afficherClassement();
