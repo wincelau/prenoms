@@ -86,21 +86,12 @@ var nouvelleListe = function() {
     var listeATirer = [];
 
     $('#liste_prenoms .liste_prenoms_item').addClass('disabled');
-    var nb_tirage_defaut = Math.abs(nb_point_to_hide) * nb_tirage_per_points;
-    var nb_tirage_max = (nb_point_max * nb_tirage_per_points) + nb_tirage_defaut;
+
 
     for (i in prenoms) {
         var prenom = prenoms[i];
-        var nb_exemplaire = nb_tirage_defaut;
-        if(choisi[prenom]) {
-            nb_exemplaire += choisi[prenom]*nb_tirage_per_points;
-        }
-        if(nb_exemplaire > nb_tirage_max) {
-            nb_exemplaire = nb_tirage_max;
-        }
-        if(nb_exemplaire <= 0) {
-            nb_exemplaire = 0;
-        }
+        var nb_exemplaire = getNbExemplaire(prenom);
+
         for (j = 1; j <= nb_exemplaire; j++) {
             listeATirer.push(prenom);
         }
@@ -119,6 +110,36 @@ var nouvelleListe = function() {
     }
 }
 
+var getNbExemplaire = function(prenom) {
+    var nb_tirage_defaut = Math.abs(nb_point_to_hide) * (nb_tirage_per_points) * 2;
+
+    var nb_exemplaire = nb_tirage_defaut;
+
+    if(!choisi[prenom]) {
+
+        return nb_exemplaire + (nb_tirage_per_points*2);
+    }
+
+    var point = choisi[prenom];
+
+    if(point > nb_point_max) {
+        point = nb_point_max;
+    }
+
+    if(point < nb_point_to_hide) {
+        point = nb_point_to_hide;
+    }
+
+    if(point > 0) {
+        nb_exemplaire += point * nb_tirage_per_points * -1;
+    }
+    if(point < 0) {
+        nb_exemplaire += point * nb_tirage_per_points * 2;
+    }
+
+    return nb_exemplaire;
+}
+
 var setPrenomsInListe = function(listeATirer) {
     var prenom = tirageAuSort(listeATirer);
 
@@ -133,7 +154,7 @@ var setPrenomsInListe = function(listeATirer) {
     };
 
     var point = null;
-    if(choisi[prenom]) {
+    if(choisi[prenom] || choisi[prenom] === 0) {
         point = choisi[prenom];
     }
     var couleur = "info";
