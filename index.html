@@ -17,11 +17,15 @@
                 <a id="nav_M" class="nav-link" href="?garcon">Garçon</a>
             </li>
         </ul>
-        <div class="row">
+        <div id="loader" class="text-center text-muted" style="margin-top: 100px; margin-bottom: 100px;">
+            <p>Chargement des prenoms ...<br /><br />Veuillez patienter :-)</p>
+        </div>
+        <div id="content" class="row d-none">
             <div class="col-md-7">
                 <p>Choisissez le prénom que vous préférez dans cette liste : </p>
                 <div id="liste_prenoms" class="list-group"></div>
-                <p style="font-size: 12px; margin-top: 10px; opacity: 0.7;"><em>&nbsp;&nbsp;<span class="text-success">+ 1 point</span> pour le prénom choisi et <span class="text-danger">- 0.5 point</span> pour les autres</br >&nbsp;&nbsp;Si aucun prénom n'est choisi <span class="text-danger">- 1 point</span> pour tous<br />&nbsp;&nbsp;Si le prénom est à <span class="text-danger">- 2 points</span> il ne sera plus proposé</em></p>
+                <p style="font-size: 12px; opacity: 0.7; margin-top: 10px; margin-bottom: 5px;"><small style="font-size: 12px;"><span id="progression"></span>% des prénoms ont été proposés</small>
+                <p style="font-size: 11px; margin-top: 0; opacity: 0.7;">- <em>&nbsp;&nbsp;<span class="text-success">+ 1 point</span> pour le prénom choisi et <span class="text-danger">- 0.5 point</span> pour les autres</br >-&nbsp;&nbsp;Si aucun prénom n'est choisi <span class="text-danger">- 1 point</span> pour tous les prénoms<br />-&nbsp;&nbsp;Si le prénom est à <span class="text-danger">- 2 points</span> ou plus il ne sera plus proposé</em></p>
             </div>
             <div class="col-md-5">
                 <div class="card">
@@ -31,19 +35,18 @@
                   </div>
                 </div>
 
-                <p style="font-size: 12px; opacity: 0.7; margin-top: 10px;"><small style="font-size: 12px;"><span id="progression"></span>% des prénoms ont été proposés</small><a class="float-right" id="effacer_les_scores" href="javascript:void(0)">Effacer les scores</a></p>
+                <p style="font-size: 12px; opacity: 0.7; margin-top: 10px;"><a class="float-right" id="effacer_les_scores" href="javascript:void(0)">Effacer les scores</a></p>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-md-12 text-center" style="font-size: 10px;">
+            <div class="col-md-12 text-center" style="font-size: 10px; margin-top: 10px;">
                 <p style="font-size: 12px;"><a href="https://github.com/wincelau/prenoms">Logiciel libre sous licence AGPL-3.0</a></p>
             </div>
         </div>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
     <script src="papaparse.min.js"></script>
-    <script src="app.js?201708221350"></script>
+    <script src="app.js?201710022057"></script>
   </body>
 </html>

@@ -2,4 +2,6 @@
 
 Application permettant d'aider à choisir un prénom, elle est disponible à cette url : http://winy.fr/prenoms/
 
-La liste des prénoms a été récupérer à partir de la liste des prénoms de Paris de 2004 à 2016 mise à disposition par la mairie de Paris sour la licence ODbL : https://opendata.paris.fr/explore/dataset/liste_des_prenoms_2004_a_2012/information/
+La liste des prénoms a été récupérer à partir de la liste des prénoms aux enfants nés en France entre 1900 et 2015 mis à disposition par l'INSEE sur data.gouv.fr sous licence ouverte  : https://www.data.gouv.fr/fr/datasets/fichier-des-prenoms-edition-2016/
+
+Les modifications apportées au fichier source sont distribué sous la même licence qu'à l'origine: [data/prenoms_france.csv](data/prenoms_france.csv)

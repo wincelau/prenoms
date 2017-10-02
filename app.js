@@ -1,5 +1,5 @@
 /* OPTIONS */
-var fichier = "prenoms.csv";
+var fichier = "data/prenoms_france.csv";
 var nb_points_choisi = 1;
 var nb_points_non_choisi = -0.5;
 var nb_points_aucun = -1;
@@ -8,7 +8,7 @@ var aucun_possible = true;
 var nb_point_defaut = 0;
 var nb_point_to_hide = -2;
 var nb_point_max = 2;
-var nb_tirage_per_points = 20;
+var nb_tirage_per_points = 2;
 var nb_tirage_defaut = Math.abs(nb_point_to_hide) * (nb_tirage_per_points) * 2;
 /* FIN DES OPTIONS */
 
@@ -27,11 +27,13 @@ if(localStorage.getItem(sexe)) {
 Papa.parse(fichier, {
     download: true,
     step: function(row) {
-        if(row.data[0][1] == sexe && row.data[0][0].trim()) {
-            prenoms.push(row.data[0][0].trim());
+        if(row.data[0][0] == sexe && row.data[0][1].trim()) {
+            prenoms.push(row.data[0][1].trim());
         }
     },
     complete: function() {
+        $('#loader').hide();
+        $('#content').removeClass('d-none');
         init();
     }
 });
@@ -187,14 +189,11 @@ var afficherClassement = function(nb_max = 10) {
             if(choisi[prenom] < 0) {
                 element.css('opacity', '0.5');
             }
-            if(choisi[prenom] <= nb_point_to_hide) {
-                element.css('opacity', '0.3');
-                element.css('text-decoration', 'line-through');
+            if(choisi[prenom] > nb_point_to_hide) {
+                $('#classement').append(element);
             }
-            $('#classement').append(element);
         }
         nb_prenoms += 1;
-
     }
 
     $('#progression').html((nb_prenoms * 100 / prenoms.length).toFixed(2));
