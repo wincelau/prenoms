@@ -68,9 +68,9 @@ var tirageAuSort = function(tableau) {
 var miseEnFavoris = function(prenom) {
 
     var ajout = true;
-    $('#panier_container').fadeOut(function() {
+    $('#panier_container').animate({'opacity': 1}, 500, function() {
         updatePanier();
-        $('#panier_container').fadeIn();
+        $('#panier_container').animate({'opacity': 0.5}, 500);
     });
 
     if(!favoris[prenom]) {
@@ -173,6 +173,8 @@ $('#liste_prenoms').on('click', '.liste_prenoms_item', function(e) {
         $(this).addClass('btn-light');
         $(this).removeClass('btn-info');
     }
+
+    $(this).removeClass('active');
 
     $(this).blur();
 
