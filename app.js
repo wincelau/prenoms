@@ -13,15 +13,20 @@ var nb_tirage_defaut = Math.abs(nb_point_to_hide) * (nb_tirage_per_points) * 2;
 /* FIN DES OPTIONS */
 
 var prenoms = [];
+var prenoms_presentes = [];
+var favoris = {};
 var choisi = {};
-var sexe = 'F';
+var sexe = 'M';
 
-if(window.location.search.replace('?', '') == 'garcon') {
-    sexe = 'M';
+if(window.location.search.replace('?', '') == 'fille') {
+    sexe = 'F';
 }
-$('#nav_'+sexe).addClass('active');
-if(localStorage.getItem(sexe)) {
-    choisi = JSON.parse(localStorage.getItem(sexe));
+
+if(localStorage.getItem("favoris_"+sexe)) {
+    favoris = JSON.parse(localStorage.getItem("favoris_"+sexe));
+}
+if(localStorage.getItem("presentes_"+sexe)) {
+    prenoms_presentes = JSON.parse(localStorage.getItem("presentes_"+sexe));
 }
 
 Papa.parse(fichier, {
@@ -43,8 +48,7 @@ var sleep = function(ms) {
 }
 
 var init = function() {
-    $('#nav_'+sexe).html($('#nav_'+sexe).html() + " <small class='text-muted'>(" + prenoms.length + " prenoms)</small>");
-    afficherClassement();
+    updatePanier();
     nouvelleListe();
 }
 
@@ -61,43 +65,49 @@ var tirageAuSort = function(tableau) {
     return tableau[index];
 }
 
-var choix = function(prenom) {
-    $('#liste_prenoms .liste_prenoms_item').each(function() {
-        var element_prenom = $(this).attr('data-prenom');
+var miseEnFavoris = function(prenom) {
 
-        if(element_prenom == "aucun") {
-            return;
-        }
-
-        if(!choisi[element_prenom]) {
-            choisi[element_prenom] = 0;
-        }
-
-        if(prenom == "aucun") {
-            choisi[element_prenom] += nb_points_aucun;
-        } else if(prenom == element_prenom) {
-            choisi[element_prenom] += nb_points_choisi;
-        } else {
-            choisi[element_prenom] += nb_points_non_choisi;
-        }
-
-        if(choisi[element_prenom] < nb_point_to_hide) {
-            choisi[element_prenom] = nb_point_to_hide;
-        }
+    var ajout = true;
+    $('#panier_container').fadeOut(function() {
+        updatePanier();
+        $('#panier_container').fadeIn();
     });
 
-    localStorage.setItem(sexe, JSON.stringify(choisi));
+    if(!favoris[prenom]) {
+        favoris[prenom] = 1;
+    } else {
+        delete favoris[prenom];
+        ajout = false;
+    }
+
+    localStorage.setItem("favoris_"+sexe, JSON.stringify(favoris));
+
+    return ajout;
+}
+
+var updatePanier = function() {
+    var nbFavoris = 0;
+    for(prenom in favoris) {
+        nbFavoris++;
+    }
+
+    $('#panier').html((nbFavoris+"").padStart(2, "0"));
 }
 
 var nouvelleListe = function() {
     var listeATirer = [];
 
-    $('#liste_prenoms .liste_prenoms_item').addClass('disabled');
+    $('#liste_prenoms .liste_prenoms_item').each(function() {
+        prenoms_presentes.push($(this).attr('data-prenom'));
+    });
 
+    localStorage.setItem("presentes_"+sexe, JSON.stringify(prenoms_presentes));
+
+    $('#liste_prenoms .liste_prenoms_item').addClass('disabled');
 
     for (i in prenoms) {
         var prenom = prenoms[i];
-        var nb_exemplaire = getNbExemplaire(prenom);
+        var nb_exemplaire = 1;
 
         for (j = 1; j <= nb_exemplaire; j++) {
             listeATirer.push(prenom);
@@ -107,42 +117,10 @@ var nouvelleListe = function() {
     for (i = 1; i <= nb_prenoms_propose; i++) {
         setPrenomsInListe(listeATirer);
     }
+    var pourcentage = (prenoms_presentes.length * 100 / prenoms.length);
 
-    if(aucun_possible && $('#liste_prenoms .liste_prenoms_item').length > 0) {
-        $('#liste_prenoms').append("<a data-prenom='aucun' href='javascript:void(0)' class='list-group-item list-group-item-action liste_prenoms_item'><i><small>Aucun de la liste</small></i></a>")
-    }
-
-    if($('#liste_prenoms .liste_prenoms_item').length == 0) {
-        $('#liste_prenoms').html("<p><i>Plus aucun prénom disponible</i></p>")
-    }
-}
-
-var getNbExemplaire = function(prenom) {
-    var nb_exemplaire = nb_tirage_defaut;
-
-    if(!choisi[prenom]) {
-
-        return nb_exemplaire + (nb_tirage_per_points*2);
-    }
-
-    var point = choisi[prenom];
-
-    if(point > nb_point_max) {
-        point = nb_point_max;
-    }
-
-    if(point < nb_point_to_hide) {
-        point = nb_point_to_hide;
-    }
-
-    if(point > 0) {
-        nb_exemplaire += point * nb_tirage_per_points * -1;
-    }
-    if(point < 0) {
-        nb_exemplaire += point * nb_tirage_per_points * 2;
-    }
-
-    return nb_exemplaire;
+    $('#progression_integer').html((pourcentage.toFixed(0)+"").padStart(2, "0"));
+    $('#progression_decimal').html(","+(pourcentage.toFixed(2)+"").split(".")[1]);
 }
 
 var setPrenomsInListe = function(listeATirer) {
@@ -162,71 +140,42 @@ var setPrenomsInListe = function(listeATirer) {
     if(choisi[prenom] || choisi[prenom] === 0) {
         point = choisi[prenom];
     }
-    var couleur = "info";
+    /*var couleur = "info";
     if(point > 0) {
         couleur = "success";
     }
     if(point < 0) {
         couleur = "danger";
-    }
+    }*/
 
-    var element = $("<a href='javascript:void(0)' class='list-group-item list-group-item-action liste_prenoms_item '></a>");
+    var element = $("<a href='javascript:void(0)' style='margin-bottom: 10px;' class='btn btn-block btn-lg btn-light liste_prenoms_item'></a>");
     element.attr('data-prenom', prenom);
     element.html(prenom);
     if(point !== null) {
-        element.append(" <small class='float-right text-"+couleur+"' style='opacity: 0.5;'>" + point + " point(s)</small>");
+        //element.append(" <small class='float-right text-"+couleur+"' style='opacity: 0.5;'>" + point + " point(s)</small>");
     }
     $('#liste_prenoms').append(element);
 }
 
-var afficherClassement = function(nb_max = 10) {
-    trierTableauClassement();
-    $('#classement').html(null);
-    var nb_prenoms = 0;
-    for(prenom in choisi) {
-        if(nb_prenoms < nb_max) {
-            var element = $("<li>"+prenom+" <small class='text-muted'>("+choisi[prenom] + " points)</small></li>");
-            if(choisi[prenom] < 0) {
-                element.css('opacity', '0.5');
-            }
-            if(choisi[prenom] > nb_point_to_hide) {
-                $('#classement').append(element);
-            }
-        }
-        nb_prenoms += 1;
-    }
-
-    $('#progression').html((nb_prenoms * 100 / prenoms.length).toFixed(2));
-}
-
-var trierTableauClassement = function() {
-    var prenoms_trier = [];
-    var choisis_trier = {};
-    for(prenom in choisi) {
-        prenoms_trier.push(((choisi[prenom] >= 0) ? "+" : "-")+(Math.abs(choisi[prenom])*100+"").padStart(10, "0")+ "_" + prenom);
-    }
-    prenoms_trier.sort(function(a, b){ return (a.match(/^-/) && b.match(/^-/)) ? a.localeCompare(b) : b.localeCompare(a) });
-
-    for(i in prenoms_trier) {
-        var prenom = prenoms_trier[i].replace(/^[0-9\.+-]+_/, "");
-        choisis_trier[prenom] = choisi[prenom];
-    }
-
-    choisi = choisis_trier;
-}
+$('#btn_suivant').on('click', function(e) {
+    e.preventDefault();
+    $(this).hide();
+    nouvelleListe();
+    $(this).show();
+})
 
 $('#liste_prenoms').on('click', '.liste_prenoms_item', function(e) {
-    if($(this).hasClass('disabled')) {
-        return false;
+
+    if(miseEnFavoris($(this).attr('data-prenom'))) {
+        $(this).addClass('btn-info');
+        $(this).removeClass('btn-light');
+    } else {
+        $(this).addClass('btn-light');
+        $(this).removeClass('btn-info');
     }
-    $(this).addClass("active");
-    sleep(150).then(() => {
-        choix($(this).attr('data-prenom'));
-        nouvelleListe();
-        afficherClassement();
-        $("#classement_cacher_tout").hide();
-        $("#classement_voir_tout").show();
-    });
+
+    $(this).blur();
+
     return false;
 });
 

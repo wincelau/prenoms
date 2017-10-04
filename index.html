@@ -1,52 +1,50 @@
 <!DOCTYPE html>
-<html lang="fr_FR">
+<html lang="en">
   <head>
-    <title>Choisi un prénom !</title>
+    <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   </head>
   <body>
-
-    <div class="container" style="padding-top: 20px; padding-bottom: 20px">
-        <ul id="nav_sexe" class="nav nav-tabs nav-fill" style="margin-bottom: 20px;">
-            <li class="nav-item">
-                <a id="nav_F" class="nav-link" href="?fille">Fille</a>
-            </li>
-            <li class="nav-item">
-                <a id="nav_M" class="nav-link" href="?garcon">Garçon</a>
-            </li>
-        </ul>
-        <div id="loader" class="text-center text-muted" style="margin-top: 100px; margin-bottom: 100px;">
-            <p>Chargement des prenoms ...<br /><br />Veuillez patienter :-)</p>
-        </div>
-        <div id="content" class="row d-none">
-            <div class="col-md-7">
-                <p>Choisissez le prénom que vous préférez dans cette liste : </p>
-                <div id="liste_prenoms" class="list-group"></div>
-                <p style="font-size: 12px; opacity: 0.7; margin-top: 10px; margin-bottom: 5px;"><small style="font-size: 12px;"><span id="progression"></span>% des prénoms ont été proposés</small>
-                <p style="font-size: 11px; margin-top: 0; opacity: 0.7;">- <em>&nbsp;&nbsp;<span class="text-success">+ 1 point</span> pour le prénom choisi et <span class="text-danger">- 0.5 point</span> pour les autres</br >-&nbsp;&nbsp;Si aucun prénom n'est choisi <span class="text-danger">- 1 point</span> pour tous les prénoms<br />-&nbsp;&nbsp;Si le prénom est à <span class="text-danger">- 2 points</span> ou plus il ne sera plus proposé</em></p>
-            </div>
-            <div class="col-md-5">
-                <div class="card">
-                  <div class="card-body">
-                    <h5 class="card-title">Top 10 <small><a id="classement_voir_tout" style="font-size: 12px;" href="javascript:void(0)">(voir tout)</a><a id="classement_cacher_tout" style="font-size: 12px; display: none;" href="javascript:void(0)">(afficher les 10)</a></small></h5>
-                    <p class="card-text"><ul id="classement"></ul></p>
-                  </div>
+    <div class="container lead">
+        <div class="row justify-content-md-center">
+            <div class="col-sm-12 col-md-8 col-lg-6">
+                <div class="text-center" style="margin-bottom: 25px; margin-top: 15px; height: 76px; position: relative;">
+                    <span id="panier_container" style="position: absolute; right: 0; opacity: 0.8;"><span style="position: relative; display:inline-block;" class="text-info"><span id="panier" style="position: absolute; top: 15px; left: 24px; font-size: 28px; color: white;">00</span><i style="font-size: 80px;" class="material-icons">favorite</i></span></span>
+                    <span class="text-dark" style="font-size: 50px; opacity: 0.15;">Garçon</span>
                 </div>
 
-                <p style="font-size: 12px; opacity: 0.7; margin-top: 10px;"><a class="float-right" id="effacer_les_scores" href="javascript:void(0)">Effacer les scores</a></p>
-            </div>
-            <div class="col-md-12 text-center" style="font-size: 10px; margin-top: 10px;">
-                <p style="font-size: 12px;"><a href="https://github.com/wincelau/prenoms">Logiciel libre sous licence AGPL-3.0</a></p>
+                <div id="liste_prenoms">
+                </div>
+
+                <div style="margin-top: 10px;" class="row">
+                    <div class="col-4 text-left" style="position: relative;">
+                        <a href="" style="opacity: 0.2; position: absolute; left: 0; display: block;" class="btn btn-lg btn-link text-info"><i class="material-icons" style="font-size: 100px;">chevron_left</i></a>
+                    </div>
+                    <div class="col-4 text-center">
+                        <div class="rounded-circle bg-info" style="height: 70px; width: 70px; display: inline-block; position: relative; opacity: 0.4; margin-top: 24px;">
+                        <span id="progression" style="font-size: 28px; display: inline-block; padding-bottom: 0; position: absolute; top: 12px; left: 9px; color: #fff;"><span id="progression_integer">70</span><span id="progression_decimal" style="font-size: 14px;">,02</span></span>
+                        <span style="font-size: 14px; display: inline-block; padding-bottom: 0; position: absolute; top: 43px; left: 29px; color: #fff;">%</span>
+                        </div>
+                    </div>
+                    <div class="col-4" style="position: relative;">
+                        <a id="btn_suivant" href="javascript:void(0)" style="position: absolute; right: 0; display: block;" class="btn btn-lg btn-link text-info"><i class="material-icons" style="font-size: 100px;">chevron_right</i></a>
+                    </div>
+                </div>
+
+                <p class="text-center" </p>
             </div>
         </div>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>
     <script src="papaparse.min.js"></script>
-    <script src="app.js?201710022057"></script>
+    <script src="app.js?201710040209"></script>
   </body>
 </html>
