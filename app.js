@@ -119,8 +119,8 @@ var nouvelleListe = function() {
     }
     var pourcentage = (prenoms_presentes.length * 100 / prenoms.length);
 
-    $('#progression_integer').html((pourcentage.toFixed(0)+"").padStart(2, "0"));
-    $('#progression_decimal').html(","+(pourcentage.toFixed(2)+"").split(".")[1]);
+    $('#progression_integer').html((Math.trunc(pourcentage)+""));
+    $('#progression_decimal').html(","+(pourcentage.toFixed(1)+"").split(".")[1]);
 }
 
 var setPrenomsInListe = function(listeATirer) {
@@ -148,7 +148,7 @@ var setPrenomsInListe = function(listeATirer) {
         couleur = "danger";
     }*/
 
-    var element = $("<a href='javascript:void(0)' style='margin-bottom: 10px;' class='btn btn-block btn-lg btn-light liste_prenoms_item'></a>");
+    var element = $("<a href='javascript:void(0)' style='margin-bottom: 10px;' class='btn btn-block btn-lg btn-light liste_prenoms_item text-left'></a>");
     element.attr('data-prenom', prenom);
     element.html(prenom);
     if(point !== null) {
@@ -169,9 +169,11 @@ $('#liste_prenoms').on('click', '.liste_prenoms_item', function(e) {
     if(miseEnFavoris($(this).attr('data-prenom'))) {
         $(this).addClass('btn-info');
         $(this).removeClass('btn-light');
+        $(this).html('<i style="font-size: 30px;" class="material-icons float-right">favorite</i>' + $(this).attr('data-prenom'));
     } else {
         $(this).addClass('btn-light');
         $(this).removeClass('btn-info');
+        $(this).html($(this).attr('data-prenom'));
     }
 
     $(this).removeClass('active');
