@@ -142,7 +142,6 @@ $('#btn_suivant').on('click', function(e) {
 })
 
 $('#liste_prenoms').on('click', '.liste_prenoms_item', function(e) {
-
     if(miseEnFavoris($(this).attr('data-prenom'))) {
         $(this).addClass('btn-info');
         $(this).removeClass('btn-light');
