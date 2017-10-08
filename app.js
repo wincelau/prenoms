@@ -91,12 +91,10 @@ var updatePanier = function() {
         nbFavoris++;
     }
 
-    $('#panier').html((nbFavoris+"").padStart(2, "0"));
+    $('#panier').html((nbFavoris));
 }
 
 var nouvelleListe = function() {
-    var listeATirer = [];
-
     $('#liste_prenoms .liste_prenoms_item').each(function() {
         prenoms_presentes.push($(this).attr('data-prenom'));
     });
@@ -105,22 +103,18 @@ var nouvelleListe = function() {
 
     $('#liste_prenoms .liste_prenoms_item').addClass('disabled');
 
-    for (i in prenoms) {
-        var prenom = prenoms[i];
-        var nb_exemplaire = 1;
+    var listeATirer = prenoms.filter(function(prenom) {
 
-        for (j = 1; j <= nb_exemplaire; j++) {
-            listeATirer.push(prenom);
-        }
-    }
+        return prenoms_presentes.indexOf(prenom) === -1;
+    });
+
     $('#liste_prenoms').html(null);
     for (i = 1; i <= nb_prenoms_propose; i++) {
         setPrenomsInListe(listeATirer);
     }
     var pourcentage = (prenoms_presentes.length * 100 / prenoms.length);
 
-    $('#progression_integer').html((Math.trunc(pourcentage)+""));
-    $('#progression_decimal').html(","+(pourcentage.toFixed(1)+"").split(".")[1]);
+    $('#progression').html(pourcentage.toFixed(1).replace(".", ","));
 }
 
 var setPrenomsInListe = function(listeATirer) {
@@ -130,30 +124,13 @@ var setPrenomsInListe = function(listeATirer) {
         return;
     }
 
-    var indexSearch = listeATirer.indexOf(prenom);
-    while(indexSearch !== -1) {
-        listeATirer.splice(indexSearch, 1);
-        indexSearch = listeATirer.indexOf(prenom);
-    };
-
-    var point = null;
-    if(choisi[prenom] || choisi[prenom] === 0) {
-        point = choisi[prenom];
-    }
-    /*var couleur = "info";
-    if(point > 0) {
-        couleur = "success";
-    }
-    if(point < 0) {
-        couleur = "danger";
-    }*/
-
+    var isFavoris = (favoris[prenom]) ? true : false;
     var element = $("<a href='javascript:void(0)' style='margin-bottom: 10px;' class='btn btn-block btn-lg btn-light liste_prenoms_item text-left'></a>");
     element.attr('data-prenom', prenom);
-    element.html(prenom);
-    if(point !== null) {
-        //element.append(" <small class='float-right text-"+couleur+"' style='opacity: 0.5;'>" + point + " point(s)</small>");
+    if(isFavoris) {
+        element.html('<i style="font-size: 30px;" class="material-icons float-right">favorite</i>');
     }
+    element.html(element.html()+prenom);
     $('#liste_prenoms').append(element);
 }
 

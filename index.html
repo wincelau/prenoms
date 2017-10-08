@@ -13,21 +13,32 @@
     <div class="container lead">
         <div class="row justify-content-md-center">
             <div class="col-sm-12 col-md-8 col-lg-6">
-                <div class="" style="margin-bottom: 20px; margin-top: 10px; height: 70px; position: relative;">
-                    <span id="panier_container" style="position: absolute; right: 0; opacity: 0.5;"><span style="position: relative; display:inline-block;" class="text-info"><span id="panier" style="position: absolute; top: 17px; left: 24px; font-size: 26px; color: white;">00</span><i style="font-size: 78px;" class="material-icons">favorite</i></span></span>
-                    <span class="text-dark" style="font-size: 50px; opacity: 0.15;">Garçon</span>
+                <div class="" style="margin-bottom: 20px; margin-top: 10px; height: 76px; position: relative;">
+                    <span style="position: absolute; right: 80px; opacity: 0.5;">
+                        <span style="position: relative; display:inline-block;" class="text-info">
+                            <span id="progression" style="position: absolute; top: 27px; left: 0; font-size: 21px; width: 86px; display: inline-block;" class="text-center">0,0</span>
+                            <span style="position: absolute; top: 50px; left: 0; font-size: 12px; font-weight: bold; width: 86px; display: inline-block;" class="text-center">%</span>
+                            <i class="material-icons" style="font-size: 86px;">data_usage</i>
+                        </span>
+                    </span>
+                    <span id="panier_container" style="position: absolute; right: 0; opacity: 0.5;">
+                        <span style="position: relative; display:inline-block;" class="text-info">
+                            <span id="panier" style="position: absolute; top: 19px; left: 0; font-size: 26px; color: white; width: 82px; display: inline-block;" class="text-center">0</span>
+                            <i class="material-icons" style="font-size: 82px;">favorite</i>
+                        </span>
+                    </span>
+                    <span class="text-dark" style="font-size: 40px; opacity: 0.15; padding-top: 10px; display: inline-block;">Garçon</span>
                 </div>
 
                 <div id="liste_prenoms">
                 </div>
 
                 <div style="margin-top: 0;" class="row">
-                    <div class="col-12 text-center">
-                        <a href="" style="opacity: 0.2; margin-top: 20px; margin-left: -35px; display: block;" class="btn btn-lg btn-link text-info float-left"><i class="material-icons" style="font-size: 80px;">chevron_left</i></a>
-                        <div class="float-right text-info" style="opacity: 0.5; margin-top: 60px; padding-right: 10px; position: relative; display: inline-block; padding: 0;">
-                            <span id="progression" style="font-size: 26px; display: inline-block; padding-bottom: 0; "><span id="progression_integer">00</span><span id="progression_decimal" style="font-size: 22px;">,00</span> <span style="font-size: 18px;">%</span></span>
-                        </div>
-                        <a id="btn_suivant" href="javascript:void(0)" style="padding: 0;" class="btn btn-lg btn-link text-info rounded-circle"><i class="material-icons" style="font-size: 120px;">chevron_right</i></a>
+                    <div class="col-6 text-center">
+                        <a href="" style="opacity: 0.2; margin-top: 16px;" class="btn btn-lg btn-link text-info float-left"><i class="material-icons" style="font-size: 80px;">chevron_left</i></a>
+                    </div>
+                    <div class="col-6 text-center">
+                        <a id="btn_suivant" href="javascript:void(0)" style="padding: 0; margin: 0" class="btn btn-lg btn-link text-info rounded-circle"><i class="material-icons" style="font-size: 130px;">chevron_right</i></a>
                     </div>
                 </div>
             </div>
@@ -38,6 +49,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>
     <script src="papaparse.min.js"></script>
-    <script src="app.js?201710071847"></script>
+    <script src="app.js?20171008218"></script>
   </body>
 </html>
