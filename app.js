@@ -17,6 +17,7 @@ var prenoms_presentes = [];
 var favoris = {};
 var choisi = {};
 var sexe = 'M';
+var position = 0;
 
 if(window.location.search.replace('?', '') == 'fille') {
     sexe = 'F';
@@ -48,8 +49,12 @@ var sleep = function(ms) {
 }
 
 var init = function() {
-    updatePanier();
-    nouvelleListe();
+    updateFavoris();
+    updateStats();
+    if(prenoms_presentes.length < nb_prenoms_propose) {
+        nouvelleListe();
+    }
+    displayListe();
 }
 
 var getRandomIntInclusive = function(min, max) {
@@ -85,7 +90,12 @@ var miseEnFavoris = function(prenom) {
     return ajout;
 }
 
-var updatePanier = function() {
+var updateStats = function() {
+    var pourcentage = (prenoms_presentes.length * 100 / prenoms.length);
+    $('#progression').html(pourcentage.toFixed(1).replace(".", ","));
+}
+
+var updateFavoris = function() {
     var nbFavoris = 0;
     for(prenom in favoris) {
         nbFavoris++;
@@ -95,12 +105,6 @@ var updatePanier = function() {
 }
 
 var nouvelleListe = function() {
-    $('#liste_prenoms .liste_prenoms_item').each(function() {
-        prenoms_presentes.push($(this).attr('data-prenom'));
-    });
-
-    localStorage.setItem("presentes_"+sexe, JSON.stringify(prenoms_presentes));
-
     $('#liste_prenoms .liste_prenoms_item').addClass('disabled');
 
     var listeATirer = prenoms.filter(function(prenom) {
@@ -108,36 +112,63 @@ var nouvelleListe = function() {
         return prenoms_presentes.indexOf(prenom) === -1;
     });
 
-    $('#liste_prenoms').html(null);
     for (i = 1; i <= nb_prenoms_propose; i++) {
-        setPrenomsInListe(listeATirer);
+        var prenom = tirageAuSort(listeATirer);
+        if(prenom) {
+            prenoms_presentes.push(prenom);
+        }
     }
-    var pourcentage = (prenoms_presentes.length * 100 / prenoms.length);
 
-    $('#progression').html(pourcentage.toFixed(1).replace(".", ","));
+    localStorage.setItem("presentes_"+sexe, JSON.stringify(prenoms_presentes));
+
+    updateStats();
 }
 
-var setPrenomsInListe = function(listeATirer) {
-    var prenom = tirageAuSort(listeATirer);
+var displayListe = function() {
+    var positionInListe = (prenoms_presentes.length - 1) - (position * nb_prenoms_propose);
 
-    if(!prenom) {
-        return;
+    $('#liste_prenoms').html(null);
+    for(i = positionInListe ; i > positionInListe - nb_prenoms_propose; i--) {
+        var prenom = prenoms_presentes[i];
+        if(prenom) {
+            var isFavoris = (favoris[prenom]) ? true : false;
+            var element = $("<a href='javascript:void(0)' style='margin-bottom: 10px;' class='btn btn-block btn-lg btn-light liste_prenoms_item text-left'></a>");
+            element.attr('data-prenom', prenom);
+            if(isFavoris) {
+                element.html('<i style="font-size: 30px;" class="material-icons float-right">favorite</i>');
+            }
+            element.html(element.html()+prenom);
+            $('#liste_prenoms').append(element);
+        }
     }
-
-    var isFavoris = (favoris[prenom]) ? true : false;
-    var element = $("<a href='javascript:void(0)' style='margin-bottom: 10px;' class='btn btn-block btn-lg btn-light liste_prenoms_item text-left'></a>");
-    element.attr('data-prenom', prenom);
-    if(isFavoris) {
-        element.html('<i style="font-size: 30px;" class="material-icons float-right">favorite</i>');
-    }
-    element.html(element.html()+prenom);
-    $('#liste_prenoms').append(element);
 }
 
 $('#btn_suivant').on('click', function(e) {
     e.preventDefault();
     $(this).hide();
-    nouvelleListe();
+    if(position == 0) {
+        nouvelleListe();
+    }
+    if(position > 0) {
+        position = position - 1;
+    }
+    if(position == 0) {
+        $('#btn_suivant .material-icons').css('font-size', '130px');
+        $('#btn_suivant').css('opacity', 1);
+        $('#btn_suivant').css('margin-top', 0);
+    }
+    displayListe();
+    $(this).show();
+})
+
+$('#btn_precedent').on('click', function(e) {
+    e.preventDefault();
+    position = position + 1;
+    $(this).hide();
+    displayListe();
+    $('#btn_suivant .material-icons').css('font-size', $('#btn_precedent .material-icons').css('font-size'));
+    $('#btn_suivant').css('opacity', $('#btn_precedent').css('opacity'));
+    $('#btn_suivant').css('margin-top', $('#btn_precedent').css('margin-top'));
     $(this).show();
 })
 
@@ -156,31 +187,5 @@ $('#liste_prenoms').on('click', '.liste_prenoms_item', function(e) {
 
     $(this).blur();
 
-    return false;
-});
-
-$('#classement_voir_tout').on('click', function(e) {
-    afficherClassement(99999);
-    $(this).hide();
-    $("#classement_cacher_tout").show();
-
-    return false;
-});
-
-$('#classement_cacher_tout').on('click', function(e) {
-    afficherClassement();
-    $(this).hide();
-    $("#classement_voir_tout").show();
-
-    return false;
-});
-
-$('#effacer_les_scores').on('click', function(e) {
-    if(!confirm("Étes vous sûr de vouloir effacer les scores ?")) {
-
-        return false;
-    }
-    localStorage.removeItem(sexe);
-    document.location.reload();
     return false;
 });
