@@ -158,6 +158,7 @@ var nouvelleListe = function() {
         var prenom = tirageAuSort(listeATirer);
         if(prenom) {
             prenoms_presentes.push(prenom);
+            listeATirer.slice(listeATirer.indexOf(prenom), 1);
         }
     }
 
