@@ -69,7 +69,7 @@ var init = function() {
     Papa.parse(fichier, {
         download: true,
         step: function(row) {
-            if(row.data[0][0] == sexe && row.data[0][1].trim()) {
+            if(row.data[0][0] == sexe && row.data[0][1].trim() && !row.data[0][1].match(/-/)) {
                 prenoms.push(row.data[0][1].trim());
             }
         },
@@ -203,6 +203,7 @@ $('#btn_suivant').on('click', function(e) {
     }
     displayListe();
     $(this).show();
+    $(this).blur();
 })
 
 $('#btn_precedent').on('click', function(e) {
@@ -210,10 +211,9 @@ $('#btn_precedent').on('click', function(e) {
     position = position + 1;
     $(this).hide();
     displayListe();
-    //$('#btn_suivant .material-icons').css('font-size', $('#btn_precedent .material-icons').css('font-size'));
     $('#btn_suivant').css('opacity', $('#btn_precedent').css('opacity'));
-    //$('#btn_suivant').css('margin-top', $('#btn_precedent').css('margin-top'));
     $(this).show();
+    $(this).blur();
 })
 
 $('#liste_prenoms').on('click', '.liste_prenoms_item', function(e) {
