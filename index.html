@@ -13,33 +13,48 @@
     <div class="container lead">
         <div class="row justify-content-md-center">
             <div class="col-sm-12 col-md-8 col-lg-6">
-                <div class="" style="margin-bottom: 30px; margin-top: 10px; height: 76px; position: relative;">
-                    <span style="position: absolute; right: 80px; opacity: 0.5;">
-                        <span id="progression_container" style="position: relative; display:inline-block;">
-                            <span id="progression" style="position: absolute; top: 27px; left: 0; font-size: 21px; width: 86px; display: inline-block;" class="text-center">0,0</span>
-                            <span style="position: absolute; top: 50px; left: 0; font-size: 12px; font-weight: bold; width: 86px; display: inline-block;" class="text-center">%</span>
-                            <i class="material-icons" style="font-size: 86px;">data_usage</i>
+                <div id="page_main" class="page">
+                    <div class="" style="margin-bottom: 30px; margin-top: 10px; height: 76px; position: relative;">
+                        <span style="position: absolute; right: 80px; opacity: 0.5;">
+                            <span id="progression_container" style="position: relative; display:inline-block;">
+                                <span id="progression" style="position: absolute; top: 27px; left: 0; font-size: 21px; width: 86px; display: inline-block;" class="text-center">0,0</span>
+                                <span style="position: absolute; top: 50px; left: 0; font-size: 12px; font-weight: bold; width: 86px; display: inline-block;" class="text-center">%</span>
+                                <i class="material-icons" style="font-size: 86px;">data_usage</i>
+                            </span>
                         </span>
-                    </span>
-                    <span style="position: absolute; right: 0;">
-                        <span id="panier_container" style="opacity: 0.5;" style="position: relative; display:inline-block; cursor: pointer;">
-                            <span id="panier" style="position: absolute; top: 20px; left: 0; font-size: 26px; color: white; width: 82px; display: inline-block;" class="text-center">0</span>
-                            <i class="material-icons" style="font-size: 82px;">favorite</i>
+                        <span id="btn_favoris" style="position: absolute; right: 0; cursor: pointer;">
+                            <span id="panier_container" style="opacity: 0.5;" style="position: relative; display:inline-block;">
+                                <span id="panier" style="position: absolute; top: 20px; left: 0; font-size: 26px; color: white; width: 82px; display: inline-block;" class="text-center">0</span>
+                                <i class="material-icons" style="font-size: 82px;">favorite</i>
+                            </span>
                         </span>
-                    </span>
-                    <span id="titre" style="font-size: 36px; opacity: 0.5; padding-top: 14px; display: inline-block; cursor: pointer;"></span>
-                </div>
-
-                <div id="liste_prenoms">
-                </div>
-
-                <div style="padding-top: 20px;" class="row">
-                    <div class="col-6 text-center">
-                            <a id="btn_precedent" href="javascript:void(0)" style="opacity: 0.2;" class="btn"><i class="material-icons" style="font-size: 80px;">chevron_left</i></a>
+                        <span id="titre" style="font-size: 36px; opacity: 0.5; padding-top: 14px; display: inline-block; cursor: pointer;"></span>
                     </div>
-                    <div class="col-6 text-center">
-                        <a style="opacity: 0.8;" id="btn_suivant" href="javascript:void(0)" class="btn"><i class="material-icons" style="font-size: 80px;">chevron_right</i></a>
+
+                    <div id="liste_prenoms">
                     </div>
+
+                    <div style="padding-top: 20px;" class="row">
+                        <div class="col-6 text-center">
+                            <a id="btn_precedent" href="javascript:void(0)" style="opacity: 0.15;" class="btn"><i class="material-icons" style="font-size: 70px;">chevron_left</i></a>
+                        </div>
+                        <div class="col-6 text-center">
+                            <a style="opacity: 0.6;" id="btn_suivant" href="javascript:void(0)" class="btn"><i class="material-icons" style="font-size: 70px;">chevron_right</i></a>
+                        </div>
+                    </div>
+                </div>
+                <div id="page_favoris" class="page d-none">
+                    <div class="" style="margin-bottom: 30px; margin-top: 10px; height: 76px; position: relative;">
+                        <span style="position: absolute; right: 0;">
+                            <span id="page_favoris_compteur_container" style="position: relative; display:inline-block;">
+                                <span id="page_favoris_compteur" style="position: absolute; top: 20px; left: 0; font-size: 26px; color: white; width: 82px; display: inline-block;" class="text-center">0</span>
+                                <i class="material-icons" style="font-size: 82px;">favorite</i>
+                            </span>
+                        </span>
+                        <a id="page_favoris_btn_retour" href="javascript:void(0)" class="btn btn-lg btn-light">Retour</a>
+                    </div>
+                    <ul id="liste_prenoms_favoris">
+                    </ul>
                 </div>
             </div>
         </div>
@@ -49,6 +64,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>
     <script src="papaparse.min.js"></script>
-    <script src="app.js?201710090012"></script>
+    <script src="app.js?201710100047"></script>
   </body>
 </html>

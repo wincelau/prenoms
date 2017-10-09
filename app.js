@@ -32,6 +32,7 @@ var init = function() {
     $('#titre').removeClass('text-'+color);
     $('#progression_container').removeClass('text-'+color);
     $('#panier_container').removeClass('text-'+color);
+    $('#page_favoris_compteur_container').removeClass('text-'+color);
     $('#btn_precedent').removeClass('btn-'+color);
     $('#btn_suivant').removeClass('btn-'+color);
 
@@ -42,16 +43,12 @@ var init = function() {
         color = 'success';
     }
 
-    if(localStorage.getItem("favoris_"+sexe)) {
-        favoris = JSON.parse(localStorage.getItem("favoris_"+sexe));
-    }
-    prenoms_presentes = []
-    if(localStorage.getItem("presentes_"+sexe)) {
-        prenoms_presentes = JSON.parse(localStorage.getItem("presentes_"+sexe));
-    }
+    $('#liste_prenoms').html(null);
+
     $('#titre').addClass('text-'+color);
     $('#progression_container').addClass('text-'+color);
     $('#panier_container').addClass('text-'+color);
+    $('#page_favoris_compteur_container').addClass('text-'+color);
     $('#btn_precedent').addClass('btn-'+color);
     $('#btn_suivant').addClass('btn-'+color);
 
@@ -59,6 +56,14 @@ var init = function() {
         $('#titre').html('Fille');
     } else {
         $('#titre').html('Garçon');
+    }
+
+    if(localStorage.getItem("favoris_"+sexe)) {
+        favoris = JSON.parse(localStorage.getItem("favoris_"+sexe));
+    }
+    prenoms_presentes = []
+    if(localStorage.getItem("presentes_"+sexe)) {
+        prenoms_presentes = JSON.parse(localStorage.getItem("presentes_"+sexe));
     }
 
     Papa.parse(fichier, {
@@ -79,6 +84,18 @@ var init = function() {
             displayListe();
         }
     });
+}
+
+var changePage = function(page) {
+    $('.page').addClass('d-none');
+    $('#page_'+page).removeClass('d-none');
+
+    if(page == 'favoris') {
+        $('#liste_prenoms_favoris').html(null);
+        for(prenom in favoris) {
+            $('#liste_prenoms_favoris').append('<li>'+prenom+'</li>');
+        }
+    }
 }
 
 var getRandomIntInclusive = function(min, max) {
@@ -125,7 +142,8 @@ var updateFavoris = function() {
         nbFavoris++;
     }
 
-    $('#panier').html((nbFavoris));
+    $('#panier').html(nbFavoris);
+    $('#page_favoris_compteur').html(nbFavoris);
 }
 
 var nouvelleListe = function() {
@@ -181,9 +199,7 @@ $('#btn_suivant').on('click', function(e) {
         position = position - 1;
     }
     if(position == 0) {
-        //$('#btn_suivant .material-icons').css('font-size', '130px');
-        $('#btn_suivant').css('opacity', 0.8);
-        //$('#btn_suivant').css('margin-top', 0);
+        $('#btn_suivant').css('opacity', 0.6);
     }
     displayListe();
     $(this).show();
@@ -225,4 +241,12 @@ $('#titre').on('click', function(e) {
         sexe = "F";
     }
     init();
+});
+
+$('#btn_favoris').on('click', function() {
+    changePage('favoris');
+});
+
+$('#page_favoris_btn_retour').on('click', function() {
+    changePage('main');
 });
