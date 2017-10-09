@@ -16,45 +16,69 @@ var prenoms = [];
 var prenoms_presentes = [];
 var favoris = {};
 var choisi = {};
-var sexe = 'M';
+var sexe = 'F';
+var color = 'info';
 var position = 0;
 
 if(window.location.search.replace('?', '') == 'fille') {
     sexe = 'F';
 }
 
-if(localStorage.getItem("favoris_"+sexe)) {
-    favoris = JSON.parse(localStorage.getItem("favoris_"+sexe));
-}
-if(localStorage.getItem("presentes_"+sexe)) {
-    prenoms_presentes = JSON.parse(localStorage.getItem("presentes_"+sexe));
-}
-
-Papa.parse(fichier, {
-    download: true,
-    step: function(row) {
-        if(row.data[0][0] == sexe && row.data[0][1].trim()) {
-            prenoms.push(row.data[0][1].trim());
-        }
-    },
-    complete: function() {
-        $('#loader').hide();
-        $('#content').removeClass('d-none');
-        init();
-    }
-});
-
-var sleep = function(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
-}
-
 var init = function() {
-    updateFavoris();
-    updateStats();
-    if(prenoms_presentes.length < nb_prenoms_propose) {
-        nouvelleListe();
+    prenoms = [];
+    position = 0;
+    favoris = {};
+
+    $('#titre').removeClass('text-'+color);
+    $('#progression_container').removeClass('text-'+color);
+    $('#panier_container').removeClass('text-'+color);
+    $('#btn_precedent').removeClass('btn-'+color);
+    $('#btn_suivant').removeClass('btn-'+color);
+
+    if(sexe == 'F') {
+        color = 'info';
     }
-    displayListe();
+    if(sexe == 'M') {
+        color = 'success';
+    }
+
+    if(localStorage.getItem("favoris_"+sexe)) {
+        favoris = JSON.parse(localStorage.getItem("favoris_"+sexe));
+    }
+    prenoms_presentes = []
+    if(localStorage.getItem("presentes_"+sexe)) {
+        prenoms_presentes = JSON.parse(localStorage.getItem("presentes_"+sexe));
+    }
+    $('#titre').addClass('text-'+color);
+    $('#progression_container').addClass('text-'+color);
+    $('#panier_container').addClass('text-'+color);
+    $('#btn_precedent').addClass('btn-'+color);
+    $('#btn_suivant').addClass('btn-'+color);
+
+    if(sexe == "F") {
+        $('#titre').html('Fille');
+    } else {
+        $('#titre').html('Garçon');
+    }
+
+    Papa.parse(fichier, {
+        download: true,
+        step: function(row) {
+            if(row.data[0][0] == sexe && row.data[0][1].trim()) {
+                prenoms.push(row.data[0][1].trim());
+            }
+        },
+        complete: function() {
+            $('#loader').hide();
+            $('#content').removeClass('d-none');
+            updateFavoris();
+            updateStats();
+            if(prenoms_presentes.length < nb_prenoms_propose) {
+                nouvelleListe();
+            }
+            displayListe();
+        }
+    });
 }
 
 var getRandomIntInclusive = function(min, max) {
@@ -74,7 +98,7 @@ var miseEnFavoris = function(prenom) {
 
     var ajout = true;
     $('#panier_container').animate({'opacity': 1}, 500, function() {
-        updatePanier();
+        updateFavoris();
         $('#panier_container').animate({'opacity': 0.5}, 500);
     });
 
@@ -136,12 +160,16 @@ var displayListe = function() {
             element.attr('data-prenom', prenom);
             if(isFavoris) {
                 element.html('<i style="font-size: 30px;" class="material-icons float-right">favorite</i>');
+                element.addClass('btn-'+color);
+                element.removeClass('btn-light');
             }
             element.html(element.html()+prenom);
             $('#liste_prenoms').append(element);
         }
     }
 }
+
+init();
 
 $('#btn_suivant').on('click', function(e) {
     e.preventDefault();
@@ -153,9 +181,9 @@ $('#btn_suivant').on('click', function(e) {
         position = position - 1;
     }
     if(position == 0) {
-        $('#btn_suivant .material-icons').css('font-size', '130px');
-        $('#btn_suivant').css('opacity', 1);
-        $('#btn_suivant').css('margin-top', 0);
+        //$('#btn_suivant .material-icons').css('font-size', '130px');
+        $('#btn_suivant').css('opacity', 0.8);
+        //$('#btn_suivant').css('margin-top', 0);
     }
     displayListe();
     $(this).show();
@@ -166,20 +194,20 @@ $('#btn_precedent').on('click', function(e) {
     position = position + 1;
     $(this).hide();
     displayListe();
-    $('#btn_suivant .material-icons').css('font-size', $('#btn_precedent .material-icons').css('font-size'));
+    //$('#btn_suivant .material-icons').css('font-size', $('#btn_precedent .material-icons').css('font-size'));
     $('#btn_suivant').css('opacity', $('#btn_precedent').css('opacity'));
-    $('#btn_suivant').css('margin-top', $('#btn_precedent').css('margin-top'));
+    //$('#btn_suivant').css('margin-top', $('#btn_precedent').css('margin-top'));
     $(this).show();
 })
 
 $('#liste_prenoms').on('click', '.liste_prenoms_item', function(e) {
     if(miseEnFavoris($(this).attr('data-prenom'))) {
-        $(this).addClass('btn-info');
+        $(this).addClass('btn-'+color);
         $(this).removeClass('btn-light');
         $(this).html('<i style="font-size: 30px;" class="material-icons float-right">favorite</i>' + $(this).attr('data-prenom'));
     } else {
         $(this).addClass('btn-light');
-        $(this).removeClass('btn-info');
+        $(this).removeClass('btn-'+color);
         $(this).html($(this).attr('data-prenom'));
     }
 
@@ -188,4 +216,13 @@ $('#liste_prenoms').on('click', '.liste_prenoms_item', function(e) {
     $(this).blur();
 
     return false;
+});
+
+$('#titre').on('click', function(e) {
+    if(sexe == "F") {
+        sexe = "M";
+    } else {
+        sexe = "F";
+    }
+    init();
 });
